@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
+import 'package:flutter_app_teach2/services/createPack/pack_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../services/auth/user_service.dart';
+import '../../../widget/pack_list.dart';
 import '../../auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
+import '../../tile/pack_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,14 +24,25 @@ class _HomeScreenState extends State<HomeScreen> {
   late UserSevice userSevice = UserSevice();
   String nameUser = "Guest";
 
+  String? packId;
+  Stream<QuerySnapshot>? packStream;
+  PackService packService = new PackService();
+  List<PackTile> userPackList = [];
+
   @override
   void initState() {
-    super.initState();
     userSevice.initUserName().then((value) {
       setState(() {
         nameUser = userSevice.getCurrentUserName;
       });
     });
+
+    packService.getPackData().then((stream) {
+      setState(() {
+        packStream = stream;
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -99,6 +116,27 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           Background(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  "Mới Nhất",
+                  style: GoogleFonts.lato(
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: packList(packStream, userPackList),
+              ),
+            ],
+          ),
         ],
       ),
     );
