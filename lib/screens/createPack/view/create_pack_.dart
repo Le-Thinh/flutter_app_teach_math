@@ -191,6 +191,8 @@ class _CreatePackScreenState extends State<CreatePackScreen> {
                               context
                                   .read<CreatepackBloc>()
                                   .add(CreatePackFinishEvent(myPack));
+
+                              Navigator.of(context).pop();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

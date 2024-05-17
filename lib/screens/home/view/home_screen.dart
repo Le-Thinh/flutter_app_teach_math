@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
-import 'package:flutter_app_teach2/services/createPack/pack_service.dart';
+import 'package:flutter_app_teach2/services/pack/pack_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../services/auth/user_service.dart';
@@ -55,7 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
           'Home',
           style: GoogleFonts.acme(),
         ),
-        leading: Image.asset('assets/images/logo.png'),
+        leading: ClipOval(
+            child: Image.asset(
+          'assets/images/logonumberblocks.jpg',
+          fit: BoxFit.cover,
+        )),
         actions: [
           IconButton(
               onPressed: () {
@@ -67,9 +71,15 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: Drawer(
         child: ListView(
           children: [
-            Image.asset(
-              "assets/images/logo.png",
-              scale: 4,
+            Padding(
+              padding: const EdgeInsets.all(64.0),
+              child: ClipOval(
+                child: Image.asset(
+                  "assets/images/logonumberblocks.jpg",
+                  fit: BoxFit.cover,
+                  scale: 5,
+                ),
+              ),
             ),
             ListTile(
               title: Text('Thông tin tài khoản: \r${nameUser}'),
@@ -121,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 16.0),
+                padding: const EdgeInsets.only(top: 8.0, left: 16.0),
                 child: Text(
                   "Mới Nhất",
                   style: GoogleFonts.lato(

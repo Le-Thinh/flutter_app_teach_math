@@ -42,7 +42,11 @@ class _TeacherScreenState extends State<TeacherScreen> {
           'Teacher Home',
           style: GoogleFonts.acme(),
         ),
-        leading: Image.asset('assets/images/logo.png'),
+        leading: ClipOval(
+            child: Image.asset(
+          'assets/images/logonumberblocks.jpg',
+          fit: BoxFit.cover,
+        )),
         actions: [
           IconButton(
               onPressed: () {

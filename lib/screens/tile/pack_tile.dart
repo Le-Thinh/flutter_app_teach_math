@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_app_teach2/screens/play_pack/view/pack_play_tile.dart';
 
 class PackTile extends StatelessWidget {
   final String packId;
@@ -18,7 +18,13 @@ class PackTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PlayPackScreen(packId: packId)));
+        print(packId.toString());
+      },
       child: Container(
         margin: const EdgeInsets.only(top: 16),
         alignment: Alignment.topLeft,
@@ -50,10 +56,9 @@ class PackTile extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.84,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +86,7 @@ class PackTile extends StatelessWidget {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.only(left: 16.0, top: 32),
+                padding: EdgeInsets.only(right: 8.0),
                 child: Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.grey,

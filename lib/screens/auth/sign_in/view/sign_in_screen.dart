@@ -56,9 +56,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => WelcomeScreen()));
                   },
-                  child: Image.asset('assets/images/logo.png')),
+                  child: ClipOval(
+                      child: Image.asset(
+                    'assets/images/logonumberblocks.jpg',
+                    fit: BoxFit.cover,
+                  ))),
               title: Text(
-                'Math',
+                'NumberBlocks',
                 style: GoogleFonts.acme(
                     textStyle:
                         const TextStyle(color: Colors.blue, fontSize: 32)),

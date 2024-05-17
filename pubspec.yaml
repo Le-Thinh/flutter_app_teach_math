@@ -51,6 +51,7 @@ dependencies:
   gallery_picker: ^0.4.8
   file_picker: ^8.0.3
   firebase_app_check: ^0.2.2+5
+  video_player: ^2.8.6
 
 dev_dependencies:
   flutter_test:
