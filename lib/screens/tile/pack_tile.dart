@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_teach2/screens/play_pack/view/pack_play_tile.dart';
+import 'package:flutter_app_teach2/screens/play_pack/view/pack_play_screen.dart';
 
 class PackTile extends StatelessWidget {
   final String packId;

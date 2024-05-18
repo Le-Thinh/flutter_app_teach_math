@@ -146,6 +146,15 @@ class _PlayPackScreenState extends State<PlayPackScreen> {
                         onPressed: _goFullScreen,
                       ),
                     ),
+                  if (_showControls)
+                    Positioned(
+                        bottom: 10,
+                        left: 10,
+                        right: 50,
+                        child: VideoProgressIndicator(
+                          _controller!,
+                          allowScrubbing: true,
+                        ))
                 ],
               ),
             )
@@ -154,10 +163,10 @@ class _PlayPackScreenState extends State<PlayPackScreen> {
 
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Text(
                 description,
-                style: TextStyle(fontSize: 16.0),
+                style: const TextStyle(fontSize: 16.0),
               ),
             ),
           ),

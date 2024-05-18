@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
-import 'package:flutter_app_teach2/screens/createPack/view/create_pack_.dart';
 import 'package:flutter_app_teach2/screens/createPack/view/create_pack_provider.dart';
+import 'package:flutter_app_teach2/services/pack/pack_service.dart';
+import 'package:flutter_app_teach2/widget/pack_list_teacher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pack_repository/pack_repository.dart';
 
 import '../../../../services/auth/user_service.dart';
 import '../../../auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
@@ -20,7 +21,10 @@ class TeacherScreen extends StatefulWidget {
 class _TeacherScreenState extends State<TeacherScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   UserSevice userSevice = UserSevice();
+  PackService packService = PackService();
   String nameUser = "Guest";
+  String idUser = "######";
+  Stream<QuerySnapshot>? packStream;
 
   @override
   void initState() {
@@ -28,6 +32,18 @@ class _TeacherScreenState extends State<TeacherScreen> {
     userSevice.initUserName().then((value) {
       setState(() {
         nameUser = userSevice.getCurrentUserName;
+      });
+    });
+
+    userSevice.initUserId().then((value) {
+      setState(() {
+        idUser = userSevice.getCurrentUserId;
+      });
+    });
+
+    packService.getPackData().then((stream) {
+      setState(() {
+        packStream = stream;
       });
     });
   }
@@ -40,7 +56,11 @@ class _TeacherScreenState extends State<TeacherScreen> {
         backgroundColor: Colors.blue.shade50,
         title: Text(
           'Teacher Home',
-          style: GoogleFonts.acme(),
+          style: GoogleFonts.acme(
+              textStyle: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.w400,
+          )),
         ),
         leading: ClipOval(
             child: Image.asset(
@@ -107,6 +127,24 @@ class _TeacherScreenState extends State<TeacherScreen> {
       body: Stack(
         children: [
           Background(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 16.0),
+                child: Text(
+                  "My Lesson",
+                  style: GoogleFonts.acme(
+                    textStyle: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(child: packListTeacher(packStream, idUser))
+            ],
+          )
         ],
       ),
       floatingActionButton: Container(

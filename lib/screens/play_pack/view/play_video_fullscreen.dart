@@ -19,6 +19,8 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
 
   @override
   void initState() {
+    super.initState();
+
     widget.controller.addListener(_videoPlayerListener);
     _isPlaying = widget.controller.value.isPlaying;
     _startHideTimer();
@@ -120,6 +122,14 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                       Navigator.pop(context);
                     },
                   ),
+                ),
+              if (_showControls)
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  right: 50,
+                  child: VideoProgressIndicator(widget.controller,
+                      allowScrubbing: true),
                 ),
             ],
           ),
