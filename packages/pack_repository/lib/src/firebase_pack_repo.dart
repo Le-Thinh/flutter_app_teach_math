@@ -36,12 +36,6 @@ class FirebasePackRepo {
     return null; // Return null if picking is cancelled or fails
   }
 
-  // Future<bool> pickFileVideo(File file) async {
-  //   final useId = _firebaseAuth?.uid;
-  //   final storageRef = FirebaseStorage.instance.ref();
-
-  // }
-
   Future<String?> uploadImage() async {
     try {
       final uid = _firebaseAuth?.uid;

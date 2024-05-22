@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_teach2/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:flutter_app_teach2/screens/auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
 import 'package:flutter_app_teach2/screens/auth/sign_up/sign_up_bloc/sign_up_bloc.dart';
 import 'package:flutter_app_teach2/screens/home/view/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +15,9 @@ class SignUpProvider extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
         if (state.status == AuthenticationStatus.authenticated) {
-          return BlocProvider<SignUpBloc>(
+          return BlocProvider<SignInBloc>(
             create: (_) =>
-                SignUpBloc(context.read<AuthenticationBloc>().userRepository),
+                SignInBloc(context.read<AuthenticationBloc>().userRepository),
             child: const HomeScreen(),
           );
         } else {

@@ -4,14 +4,14 @@ import 'package:flutter_app_teach2/screens/play_pack/view/pack_play_screen.dart'
 class PackTile extends StatelessWidget {
   final String packId;
   final String img;
-  final String thumbnail;
+  final String title;
   final String lessonName;
 
   const PackTile({
     super.key,
     required this.packId,
     required this.img,
-    required this.thumbnail,
+    required this.title,
     required this.lessonName,
   });
 
@@ -64,7 +64,7 @@ class PackTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        thumbnail,
+                        title,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

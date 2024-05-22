@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
 import 'package:flutter_app_teach2/screens/createPack/view/create_pack_provider.dart';
 import 'package:flutter_app_teach2/services/pack/pack_service.dart';
+import 'package:flutter_app_teach2/services/title/title_service.dart';
 import 'package:flutter_app_teach2/widget/pack_list_teacher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,6 +30,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
   @override
   void initState() {
     super.initState();
+
     userSevice.initUserName().then((value) {
       setState(() {
         nameUser = userSevice.getCurrentUserName;

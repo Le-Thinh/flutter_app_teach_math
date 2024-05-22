@@ -20,5 +20,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         emit(SignUpFailure());
       }
     });
+    on<SignOutRequired>(logOut);
+  }
+
+  void logOut(SignOutRequired event, Emitter<SignUpState> emit) async {
+    await _userRepository.logOut();
+    emit(SignUpInitial());
   }
 }

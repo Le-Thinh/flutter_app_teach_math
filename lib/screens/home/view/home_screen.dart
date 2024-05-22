@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../services/auth/user_service.dart';
 import '../../../widget/pack_list.dart';
 import '../../auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
-import '../../tile/pack_tile.dart';
+import '../../../tile/pack_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,8 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade50,
         title: Text(
-          'Home',
-          style: GoogleFonts.acme(),
+          'Number Blocks',
+          style: GoogleFonts.acme(
+              textStyle: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.w400,
+          )),
         ),
         leading: ClipOval(
             child: Image.asset(

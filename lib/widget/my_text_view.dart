@@ -13,19 +13,20 @@ class MyTextField extends StatelessWidget {
   final String? errorMsg;
   final String? Function(String?)? onChanged;
 
-  const MyTextField(
-      {super.key,
-      required this.controller,
-      required this.hintText,
-      required this.obscureText,
-      required this.keyboardType,
-      this.suffixIcon,
-      this.onTap,
-      this.prefixIcon,
-      this.validator,
-      this.focusNode,
-      this.errorMsg,
-      this.onChanged});
+  const MyTextField({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    required this.obscureText,
+    required this.keyboardType,
+    this.suffixIcon,
+    this.onTap,
+    this.prefixIcon,
+    this.validator,
+    this.focusNode,
+    this.errorMsg,
+    this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {

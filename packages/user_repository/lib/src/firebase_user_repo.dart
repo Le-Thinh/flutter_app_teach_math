@@ -56,8 +56,6 @@ class FirebaseUserRepo implements UserRepository {
     });
   }
 
-  
-
   @override
   Future<MyUser> signUp(MyUser myUser, String password) async {
     try {

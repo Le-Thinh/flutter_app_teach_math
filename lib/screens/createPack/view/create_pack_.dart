@@ -1,9 +1,15 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_app_teach2/dialog/title_dialog.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
 import 'package:flutter_app_teach2/screens/createPack/create_pack_bloc/createpack_bloc.dart';
 import 'package:flutter_app_teach2/services/auth/user_service.dart';
+import 'package:flutter_app_teach2/services/title/title_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pack_repository/pack_repository.dart';
 
@@ -19,14 +25,28 @@ class CreatePackScreen extends StatefulWidget {
 class _CreatePackScreenState extends State<CreatePackScreen> {
   final TextEditingController lessonNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController thumbnailController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+
   String imageUrl = "";
   String videoUrl = "";
   String userId = "###########";
+  String selectedTitle = "Select Default";
   UserSevice userSevice = UserSevice();
+  StreamController<List<DocumentSnapshot>> titleStreamController =
+      StreamController<List<DocumentSnapshot>>();
+
+  TitleService titleService = TitleService();
+
+  Future<void> _loadTitles() async {
+    List<DocumentSnapshot> titles = await titleService.getTitlesByCurrentUser();
+    titleStreamController.add(titles);
+  }
 
   @override
   void initState() {
+    //load Title
+    _loadTitles();
+
     userSevice.initUserId().then((value) {
       setState(() {
         userId = userSevice.getCurrentUserId;
@@ -68,18 +88,39 @@ class _CreatePackScreenState extends State<CreatePackScreen> {
                       controller: lessonNameController,
                       hintText: 'Lesson Name',
                       obscureText: false,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       prefixIcon: const Icon(CupertinoIcons.text_bubble),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: MyTextField(
-                      controller: thumbnailController,
-                      hintText: 'Thumnail',
-                      obscureText: false,
-                      keyboardType: TextInputType.emailAddress,
-                      prefixIcon: const Icon(CupertinoIcons.text_bubble),
+                    child: Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        MyTextField(
+                          controller: titleController,
+                          hintText: 'Title',
+                          obscureText: false,
+                          keyboardType: TextInputType.text,
+                          prefixIcon: const Icon(Icons.title_rounded),
+                          onTap: () {
+                            showTitleDialog(context, titleStreamController)
+                                .then((value) {
+                              setState(() {
+                                if (value != null) {
+                                  selectedTitle = value;
+
+                                  titleController.text = selectedTitle;
+                                }
+                              });
+                            });
+                          },
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: Icon(Icons.arrow_drop_down),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
@@ -184,7 +225,7 @@ class _CreatePackScreenState extends State<CreatePackScreen> {
                             myPack.createBy = userId;
                             myPack.description = descriptionController.text;
                             myPack.lessonName = lessonNameController.text;
-                            myPack.thumnail = thumbnailController.text;
+                            myPack.title = titleController.text;
                             myPack.video = videoUrl.toString();
                             myPack.img = imageUrl.toString();
                             if (videoUrl != "" && imageUrl != "") {

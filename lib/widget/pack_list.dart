@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_teach2/screens/tile/pack_tile.dart';
+import 'package:flutter_app_teach2/tile/pack_tile.dart';
 
 Widget packList(Stream<QuerySnapshot>? packStream) {
   return Container(
@@ -23,13 +23,13 @@ Widget packList(Stream<QuerySnapshot>? packStream) {
 
           for (var packDoc in packList) {
             var pack = packDoc.data();
-            if (pack.containsKey("thumnail") &&
+            if (pack.containsKey("title") &&
                 pack.containsKey("lessonName") &&
                 pack.containsKey("img")) {
               userPackTiles.add(PackTile(
                 packId: packDoc.id,
                 img: pack["img"] as String,
-                thumbnail: pack["thumnail"] as String,
+                title: pack["title"] as String,
                 lessonName: pack["lessonName"] as String,
               ));
             }

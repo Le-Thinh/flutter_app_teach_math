@@ -1,7 +1,7 @@
 class MyPackEntity {
   String packid;
   String lessonName;
-  String thumnail;
+  String title;
   String video;
   String img;
   DateTime? createAt;
@@ -11,7 +11,7 @@ class MyPackEntity {
   MyPackEntity({
     required this.packid,
     required this.lessonName,
-    required this.thumnail,
+    required this.title,
     required this.video,
     required this.img,
     required this.createAt,
@@ -23,7 +23,7 @@ class MyPackEntity {
     return {
       'packId': packid,
       'lessonName': lessonName,
-      'thumnail': thumnail,
+      'title': title,
       'video': video,
       'img': img,
       'createAt': createAt as DateTime,
@@ -36,7 +36,7 @@ class MyPackEntity {
     return MyPackEntity(
         packid: doc['packid'],
         lessonName: doc['lessonName'],
-        thumnail: doc['thumnail'],
+        title: doc['title'],
         video: doc['video'],
         img: doc['img'],
         createAt: doc['createAt'],

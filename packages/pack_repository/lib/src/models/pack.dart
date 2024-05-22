@@ -4,7 +4,7 @@ import 'package:pack_repository/src/entities/pack_entity.dart';
 class Pack {
   String packid;
   String lessonName;
-  String thumnail;
+  String title;
   String video;
   String img;
   DateTime? createAt;
@@ -14,7 +14,7 @@ class Pack {
   Pack({
     required this.packid,
     required this.lessonName,
-    required this.thumnail,
+    required this.title,
     required this.video,
     required this.img,
     required this.createAt,
@@ -25,7 +25,7 @@ class Pack {
   static final empty = Pack(
     packid: '',
     lessonName: '',
-    thumnail: '',
+    title: '',
     video: '',
     img: '',
     createAt: null,
@@ -37,7 +37,7 @@ class Pack {
     return MyPackEntity(
       packid: packid,
       lessonName: lessonName,
-      thumnail: thumnail,
+      title: title,
       video: video,
       img: img,
       createAt: createAt,
@@ -50,7 +50,7 @@ class Pack {
     return Pack(
         packid: entity.packid,
         lessonName: entity.lessonName,
-        thumnail: entity.thumnail,
+        title: entity.title,
         video: entity.video,
         img: entity.img,
         createAt: entity.createAt,
@@ -60,6 +60,6 @@ class Pack {
 
   @override
   String toString() {
-    return 'My Pack: $packid, $lessonName, $thumnail, $video, $img, $createAt, $createBy, $description';
+    return 'My Pack: $packid, $lessonName, $title, $video, $img, $createAt, $createBy, $description';
   }
 }
