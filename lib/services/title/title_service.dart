@@ -5,12 +5,9 @@ class TitleService {
   final _firebaseAuth = FirebaseAuth.instance.currentUser;
   final _titleCollection = FirebaseFirestore.instance.collection("titles");
 
-  Future<List<DocumentSnapshot>> getTitlesByCurrentUser() async {
+  getTitles() async {
     try {
-      QuerySnapshot querySnapshot = await _titleCollection
-          .where('userId', isEqualTo: _firebaseAuth!.uid)
-          .get();
-      return querySnapshot.docs;
+      return await _titleCollection.snapshots();
     } catch (e) {
       print("Error fetching titles: $e");
       return [];

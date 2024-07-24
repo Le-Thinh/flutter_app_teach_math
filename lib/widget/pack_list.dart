@@ -4,6 +4,7 @@ import 'package:flutter_app_teach2/tile/pack_tile.dart';
 
 Widget packList(Stream<QuerySnapshot>? packStream) {
   return Container(
+    height: 120,
     margin: const EdgeInsets.symmetric(horizontal: 24),
     child: StreamBuilder(
       stream: packStream,
@@ -36,7 +37,7 @@ Widget packList(Stream<QuerySnapshot>? packStream) {
           }
           return ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: userPackTiles.length,
+              itemCount: 8,
               itemBuilder: (context, index) {
                 return userPackTiles[index];
               });

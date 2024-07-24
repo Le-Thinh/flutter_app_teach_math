@@ -1,18 +1,46 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_teach2/screens/title/view/create_title_provider.dart';
-import 'package:flutter_app_teach2/screens/title/view/title_list.dart';
+import '../screens/title/view/create_title_provider.dart';
 
-showTitleDialog(BuildContext context,
-    StreamController<List<DocumentSnapshot>> titleStreamController) {
-  showDialog(
+Future<String?> showTitleDialog(BuildContext context,
+    Stream<QuerySnapshot<Map<String, dynamic>>> titleStream) async {
+  String? selectedTitle;
+
+  return await showDialog<String>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Select a Title"),
-        content: titleList(titleStreamController.stream),
+        title: const Text("Select a Title"),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: titleStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return const Center(child: Text("No titles found"));
+              } else {
+                var titleList = snapshot.data!.docs;
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: titleList.length,
+                  itemBuilder: (context, index) {
+                    var titleDoc = titleList[index];
+                    return ListTile(
+                      title: Text(titleDoc['titleName']),
+                      onTap: () {
+                        selectedTitle = titleDoc['titleName'];
+                        Navigator.of(context).pop(selectedTitle);
+                      },
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -21,14 +49,14 @@ showTitleDialog(BuildContext context,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text("Close"),
+                child: const Text("Close"),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CreateTitleProvider()),
+                        builder: (context) => const CreateTitleProvider()),
                   );
                 },
                 child: const Text("Add New Title"),

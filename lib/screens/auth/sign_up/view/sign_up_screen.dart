@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,8 +12,10 @@ import 'package:user_repository/user_repository.dart';
 
 import '../../../../welcome_screen.dart';
 import '../../../../widget/my_text_view.dart';
-import '../../../home/view/home_screen.dart';
+import '../../../home/view/users/home_screen.dart';
 import '../../sign_in/view/sign_in_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_app_teach2/config/config.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -34,6 +38,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool containsNumber = false;
   bool containsSpecialChar = false;
   bool contains8Length = false;
+
+  void registerUser() async {
+    var regBody = {
+      "email": emailController.text,
+      "password": passwordController.text
+    };
+    var response = await http.post(Uri.parse(registration),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(regBody));
+
+    var jsonResponse = jsonDecode(response.body);
+
+    print(jsonResponse['status']);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<SignUpBloc, SignUpState>(
@@ -265,11 +284,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     myUser.name = nameController.text;
                                     myUser.role = '1';
                                     myUser.active = true;
-
                                     setState(() {
                                       context.read<SignUpBloc>().add(
                                           SignUpRequired(
                                               myUser, passwordController.text));
+                                      registerUser();
                                     });
                                   }
                                 },

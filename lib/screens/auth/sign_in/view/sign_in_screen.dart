@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_teach2/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
 import 'package:flutter_app_teach2/screens/auth/sign_up/view/sign_up_provider.dart';
-import 'package:flutter_app_teach2/screens/home/view/home_screen.dart';
+import 'package:flutter_app_teach2/screens/home/view/users/home_screen.dart';
 import 'package:flutter_app_teach2/welcome_screen.dart';
 import 'package:flutter_app_teach2/widget/my_text_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             body: Stack(
               children: <Widget>[
-                Background(),
+                const Background(),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,

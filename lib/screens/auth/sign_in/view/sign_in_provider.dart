@@ -7,7 +7,7 @@ import 'package:flutter_app_teach2/screens/home/view/admin/home_admin.dart';
 import 'package:flutter_app_teach2/screens/home/view/teacher/home_teacher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../home/view/home_screen.dart';
+import '../../../home/view/users/home_screen.dart';
 
 class SignInProvider extends StatelessWidget {
   const SignInProvider({super.key});

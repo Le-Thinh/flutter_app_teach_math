@@ -1,4 +1,4 @@
-import 'package:flutter_app_teach2/models/thumbnail/entity.dart';
+import 'package:flutter_app_teach2/models/title/entity.dart';
 
 class title {
   String titleId;

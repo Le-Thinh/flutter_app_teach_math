@@ -6,3 +6,10 @@ sealed class PlayPackEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ViewEvent extends PlayPackEvent {
+  Views view;
+  ViewEvent(this.view);
+  @override
+  List<Object> get props => [view];
+}

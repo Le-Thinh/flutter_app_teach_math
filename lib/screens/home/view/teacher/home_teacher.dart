@@ -21,7 +21,7 @@ class TeacherScreen extends StatefulWidget {
 
 class _TeacherScreenState extends State<TeacherScreen> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
-  UserSevice userSevice = UserSevice();
+  UserService userService = UserService();
   PackService packService = PackService();
   String nameUser = "Guest";
   String idUser = "######";
@@ -31,15 +31,15 @@ class _TeacherScreenState extends State<TeacherScreen> {
   void initState() {
     super.initState();
 
-    userSevice.initUserName().then((value) {
+    userService.initUserName().then((value) {
       setState(() {
-        nameUser = userSevice.getCurrentUserName;
+        nameUser = userService.getCurrentUserName;
       });
     });
 
-    userSevice.initUserId().then((value) {
+    userService.initUserId().then((value) {
       setState(() {
-        idUser = userSevice.getCurrentUserId;
+        idUser = userService.getCurrentUserId;
       });
     });
 
@@ -57,7 +57,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade50,
         title: Text(
-          'Teacher Home',
+          'T Home',
           style: GoogleFonts.acme(
               textStyle: TextStyle(
             fontSize: 32,
@@ -85,11 +85,11 @@ class _TeacherScreenState extends State<TeacherScreen> {
               scale: 4,
             ),
             ListTile(
-              title: Text('Thông tin tài khoản: \r${nameUser}'),
+              title: Text('Account: \r${nameUser}'),
               onTap: () {},
             ),
             ListTile(
-              title: const Text('Lớp học của bạn'),
+              title: const Text('Your Video'),
               onTap: () {},
             ),
             ListTile(

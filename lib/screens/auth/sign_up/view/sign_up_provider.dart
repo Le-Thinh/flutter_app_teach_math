@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_teach2/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_app_teach2/screens/auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
 import 'package:flutter_app_teach2/screens/auth/sign_up/sign_up_bloc/sign_up_bloc.dart';
-import 'package:flutter_app_teach2/screens/home/view/home_screen.dart';
+import 'package:flutter_app_teach2/screens/home/view/users/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'sign_up_screen.dart';

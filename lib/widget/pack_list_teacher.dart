@@ -37,6 +37,9 @@ Widget packListTeacher(Stream<QuerySnapshot>? packStream, String teacherId) {
               ));
             }
           }
+          if (userPackTiles.isEmpty) {
+            return const Center(child: Text('No packs available.'));
+          }
           return ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: userPackTiles.length,

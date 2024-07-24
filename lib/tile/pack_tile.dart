@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_teach2/screens/play_pack/view/pack_play_screen.dart';
+import 'package:flutter_app_teach2/models/watched/watch.dart';
+import 'package:flutter_app_teach2/repositories/view_repository.dart';
+import 'package:flutter_app_teach2/screens/home/view/users/home_bloc/home_bloc.dart';
+import 'package:flutter_app_teach2/screens/play_pack/play_pack_bloc/play_pack_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../screens/play_pack/view/pack_play_screen.dart';
+import '../services/auth/user_service.dart';
+import 'package:flutter_app_teach2/models/view/view.dart';
 
-class PackTile extends StatelessWidget {
+class PackTile extends StatefulWidget {
   final String packId;
   final String img;
   final String title;
@@ -16,14 +23,47 @@ class PackTile extends StatelessWidget {
   });
 
   @override
+  State<PackTile> createState() => _PackTileState();
+}
+
+class _PackTileState extends State<PackTile> {
+  String userId = "###########";
+  UserService userService = new UserService();
+  ViewRepository viewRepository = new ViewRepository();
+
+  @override
+  void initState() {
+    userService.initUserId().then((value) {
+      userId = userService.getCurrentUserId;
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Views view = Views.empty;
+        view.viewAt = DateTime.now();
+        view.viewerId = userId;
+        view.finish = false;
+        view.packId = widget.packId.toString();
+
+        context
+            .read<HomeBloc>()
+            .add(ViewVideoEvent(view, view.packId.toString()));
+
+        Watch watch = Watch.empty;
+        watch.userId = userId;
+        watch.packId = widget.packId;
+        watch.watchAt = DateTime.now();
+
+        context.read<HomeBloc>().add(WatchedVideoEvent(watch));
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PlayPackScreen(packId: packId)));
-        print(packId.toString());
+                builder: (context) => PlayPackScreen(packId: widget.packId)));
+        print(widget.packId.toString());
       },
       child: Container(
         margin: const EdgeInsets.only(top: 16),
@@ -50,7 +90,7 @@ class PackTile extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  img,
+                  widget.img,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -64,7 +104,7 @@ class PackTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        title,
+                        widget.title,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -74,7 +114,7 @@ class PackTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        lessonName,
+                        widget.lessonName,
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.black54,

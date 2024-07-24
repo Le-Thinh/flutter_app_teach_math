@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_teach2/screens/game/game_screen.dart';
 import 'package:flutter_app_teach2/services/pack/pack_service.dart';
 import 'package:video_player/video_player.dart';
 
@@ -110,64 +111,79 @@ class _PlayPackScreenState extends State<PlayPackScreen> {
         backgroundColor: Colors.blue.shade50,
         title: Text("Lesson: " + lessName),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          // Video player
-          if (_controller != null && _controller!.value.isInitialized)
-            MouseRegion(
-              onHover: (_) => _showControlsOnMouseHover(),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: VideoPlayer(_controller!),
-                  ),
-                  if (_showControls)
-                    GestureDetector(
-                      onTap: _togglePlayPause,
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Icon(
-                          _isPlaying ? Icons.pause : Icons.play_arrow,
-                          size: 80.0,
-                          color: Colors.white,
+          Column(
+            children: [
+              // Video player
+              if (_controller != null && _controller!.value.isInitialized)
+                MouseRegion(
+                  onHover: (_) => _showControlsOnMouseHover(),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      AspectRatio(
+                        aspectRatio: _controller!.value.aspectRatio,
+                        child: VideoPlayer(_controller!),
+                      ),
+                      if (_showControls)
+                        GestureDetector(
+                          onTap: _togglePlayPause,
+                          child: Container(
+                            color: Colors.transparent,
+                            child: Icon(
+                              _isPlaying ? Icons.pause : Icons.play_arrow,
+                              size: 80.0,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  if (_showControls)
-                    Positioned(
-                      bottom: 10,
-                      right: 10,
-                      child: IconButton(
-                        color: Colors.grey,
-                        icon: const Icon(Icons.fullscreen,
-                            color: Colors.white, size: 30.0),
-                        onPressed: _goFullScreen,
-                      ),
-                    ),
-                  if (_showControls)
-                    Positioned(
-                        bottom: 10,
-                        left: 10,
-                        right: 50,
-                        child: VideoProgressIndicator(
-                          _controller!,
-                          allowScrubbing: true,
-                        ))
-                ],
-              ),
-            )
-          else
-            const CircularProgressIndicator(),
+                      if (_showControls)
+                        Positioned(
+                          bottom: 10,
+                          right: 10,
+                          child: IconButton(
+                            color: Colors.grey,
+                            icon: const Icon(Icons.fullscreen,
+                                color: Colors.white, size: 30.0),
+                            onPressed: _goFullScreen,
+                          ),
+                        ),
+                      if (_showControls)
+                        Positioned(
+                            bottom: 10,
+                            left: 10,
+                            right: 50,
+                            child: VideoProgressIndicator(
+                              _controller!,
+                              allowScrubbing: true,
+                            ))
+                    ],
+                  ),
+                )
+              else
+                const CircularProgressIndicator(),
 
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                description,
-                style: const TextStyle(fontSize: 16.0),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    description,
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                ),
               ),
+            ],
+          ),
+          Positioned(
+            bottom: 16.0,
+            right: 16.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => GameScreen()));
+              },
+              child: const Icon(Icons.arrow_right_alt_outlined),
             ),
           ),
         ],

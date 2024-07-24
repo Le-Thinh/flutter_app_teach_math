@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app_teach2/services/auth/user_repo.dart';
 
-class UserSevice implements UserServiceRepository {
+class UserService implements UserServiceRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final collection = FirebaseFirestore.instance.collection('users');
   String _userName = "Guest";

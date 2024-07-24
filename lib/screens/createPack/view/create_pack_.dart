@@ -11,6 +11,7 @@ import 'package:flutter_app_teach2/screens/createPack/create_pack_bloc/createpac
 import 'package:flutter_app_teach2/services/auth/user_service.dart';
 import 'package:flutter_app_teach2/services/title/title_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pack_repository/pack_repository.dart';
 
 import '../../../widget/my_text_view.dart';
@@ -31,25 +32,24 @@ class _CreatePackScreenState extends State<CreatePackScreen> {
   String videoUrl = "";
   String userId = "###########";
   String selectedTitle = "Select Default";
-  UserSevice userSevice = UserSevice();
-  StreamController<List<DocumentSnapshot>> titleStreamController =
-      StreamController<List<DocumentSnapshot>>();
+  UserService userService = UserService();
+  Stream<QuerySnapshot<Map<String, dynamic>>>? titleStream;
 
   TitleService titleService = TitleService();
-
-  Future<void> _loadTitles() async {
-    List<DocumentSnapshot> titles = await titleService.getTitlesByCurrentUser();
-    titleStreamController.add(titles);
-  }
 
   @override
   void initState() {
     //load Title
-    _loadTitles();
 
-    userSevice.initUserId().then((value) {
+    titleService.getTitles().then((stream) {
       setState(() {
-        userId = userSevice.getCurrentUserId;
+        titleStream = stream;
+      });
+    });
+
+    userService.initUserId().then((value) {
+      setState(() {
+        userId = userService.getCurrentUserId;
       });
     });
     super.initState();
@@ -60,7 +60,15 @@ class _CreatePackScreenState extends State<CreatePackScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade50,
-        title: const Text('Create New Pack'),
+        title: Text(
+          'Create New Pack',
+          style: GoogleFonts.lato(
+            textStyle: Theme.of(context).textTheme.displayLarge,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       ),
       body: Stack(
         children: <Widget>[
@@ -103,17 +111,14 @@ class _CreatePackScreenState extends State<CreatePackScreen> {
                           obscureText: false,
                           keyboardType: TextInputType.text,
                           prefixIcon: const Icon(Icons.title_rounded),
-                          onTap: () {
-                            showTitleDialog(context, titleStreamController)
-                                .then((value) {
-                              setState(() {
-                                if (value != null) {
-                                  selectedTitle = value;
-
-                                  titleController.text = selectedTitle;
-                                }
-                              });
-                            });
+                          onTap: () async {
+                            final selectedTitle = await showTitleDialog(
+                              context,
+                              titleStream!,
+                            );
+                            if (selectedTitle != null) {
+                              titleController.text = selectedTitle;
+                            }
                           },
                         ),
                         const Padding(
