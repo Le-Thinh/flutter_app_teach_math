@@ -13,8 +13,8 @@ import 'blocs/authentication_bloc/authentication_bloc.dart';
 import 'repositories/view_repository.dart';
 
 class MyAppView extends StatelessWidget {
-  UserRepository _userRepository;
-  MyAppView(this._userRepository, {super.key});
+  final UserRepository _userRepository;
+  const MyAppView(this._userRepository, {super.key});
 
   @override
   Widget build(BuildContext context) {

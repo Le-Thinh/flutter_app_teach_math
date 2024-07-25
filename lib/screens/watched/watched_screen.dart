@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
 import 'package:flutter_app_teach2/screens/home/view/users/home_provider.dart';
+import 'package:flutter_app_teach2/services/finished/finish_services.dart';
 import 'package:flutter_app_teach2/services/watched/watch_service.dart';
+import 'package:flutter_app_teach2/widget/finish_list.dart';
 import 'package:flutter_app_teach2/widget/watched_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../services/auth/user_service.dart';
 import '../../widget/nav_bottom.dart';
 import '../auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
+import '../search/search_screen.dart';
 
 class WatchedScreen extends StatefulWidget {
   const WatchedScreen({super.key});
@@ -26,6 +29,7 @@ class _WatchedScreenState extends State<WatchedScreen> {
   String nameUser = "Guest";
   String userId = "#########";
   WatchService watchService = WatchService();
+  FinishServices finishServices = FinishServices();
   int _selectedIndex = 1;
 
   @override
@@ -43,6 +47,17 @@ class _WatchedScreenState extends State<WatchedScreen> {
     });
 
     super.initState();
+  }
+
+  void showSearchOverlay() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => FractionallySizedBox(
+        heightFactor: 0.9,
+        child: SearchOverlay(userId),
+      ),
+    );
   }
 
   void onItemTapped(int index) {
@@ -89,8 +104,10 @@ class _WatchedScreenState extends State<WatchedScreen> {
         )),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearchOverlay();
+            },
+            icon: const Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {
@@ -171,10 +188,10 @@ class _WatchedScreenState extends State<WatchedScreen> {
                   padding: const EdgeInsets.only(top: 8.0, left: 16.0),
                   child: Text(
                     "Diary",
-                    style: GoogleFonts.abel(
+                    style: GoogleFonts.acme(
                       textStyle: const TextStyle(
                         fontSize: 36,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -182,10 +199,29 @@ class _WatchedScreenState extends State<WatchedScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: SizedBox(
-                    height: 200,
+                    height: 100,
                     child: watchedPackList(userId, watchService),
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 16.0),
+                  child: Text(
+                    "Finished",
+                    style: GoogleFonts.acme(
+                      textStyle: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: SizedBox(
+                    height: 100,
+                    child: finishedPackList(userId, finishServices),
+                  ),
+                ),
               ],
             ),
           )

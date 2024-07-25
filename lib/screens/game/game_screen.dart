@@ -96,7 +96,7 @@ class _GameScreenState extends State<GameScreen> {
         setState(() {
           selectedImageIndex = null;
           selectedWordIndex = null;
-          countIncorrect = countIncorrect! + 1;
+          countIncorrect = countIncorrect + 1;
         });
       }
     }

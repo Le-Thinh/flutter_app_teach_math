@@ -8,13 +8,13 @@ import '../screens/play_pack/view/pack_play_screen.dart';
 import '../services/auth/user_service.dart';
 import 'package:flutter_app_teach2/models/view/view.dart';
 
-class PackTile extends StatefulWidget {
+class PackTileVertical extends StatefulWidget {
   final String packId;
   final String img;
   final String title;
   final String lessonName;
 
-  const PackTile({
+  const PackTileVertical({
     super.key,
     required this.packId,
     required this.img,
@@ -23,10 +23,10 @@ class PackTile extends StatefulWidget {
   });
 
   @override
-  State<PackTile> createState() => _PackTileState();
+  State<PackTileVertical> createState() => _PackTileState();
 }
 
-class _PackTileState extends State<PackTile> {
+class _PackTileState extends State<PackTileVertical> {
   String userId = "###########";
   UserService userService = new UserService();
   ViewRepository viewRepository = new ViewRepository();
@@ -72,7 +72,7 @@ class _PackTileState extends State<PackTile> {
         alignment: Alignment.topLeft,
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 8),
-          width: MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.7,
           height: MediaQuery.of(context).size.height * 0.1,
           decoration: BoxDecoration(
             color: Colors.white,

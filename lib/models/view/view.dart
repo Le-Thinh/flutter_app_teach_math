@@ -5,14 +5,12 @@ class Views {
   String viewerId;
   String packId;
   DateTime? viewAt;
-  bool? finish;
 
   Views({
     required this.viewId,
     required this.viewerId,
     required this.packId,
     required this.viewAt,
-    required this.finish,
   });
 
   static final empty = Views(
@@ -20,7 +18,6 @@ class Views {
     viewerId: '',
     packId: '',
     viewAt: null,
-    finish: false,
   );
 
   ViewEntity toEntity() {
@@ -29,7 +26,6 @@ class Views {
       viewerId: viewerId,
       packId: packId,
       viewAt: viewAt,
-      finish: finish,
     );
   }
 
@@ -39,7 +35,6 @@ class Views {
       viewerId: entity.viewerId,
       packId: entity.packId,
       viewAt: entity.viewAt,
-      finish: entity.finish,
     );
   }
 }

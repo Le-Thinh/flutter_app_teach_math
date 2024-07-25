@@ -3,14 +3,12 @@ class ViewEntity {
   String viewerId;
   String packId;
   DateTime? viewAt;
-  bool? finish;
 
   ViewEntity({
     required this.viewId,
     required this.viewerId,
     required this.packId,
     required this.viewAt,
-    required this.finish,
   });
 
   Map<String, Object?> toDocument() {
@@ -19,7 +17,6 @@ class ViewEntity {
       'viewerId': viewerId,
       'packId': packId,
       'viewAt': viewAt as DateTime,
-      'finish': finish as bool,
     };
   }
 
@@ -29,7 +26,6 @@ class ViewEntity {
       viewerId: doc['viewerId'],
       packId: doc['packId'],
       viewAt: doc['viewAt'],
-      finish: doc['finish'],
     );
   }
 }

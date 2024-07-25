@@ -50,7 +50,7 @@ class _SearchOverlayState extends State<SearchOverlay> {
     Views view = Views.empty;
     view.viewAt = DateTime.now();
     view.viewerId = widget.userId;
-    view.finish = false;
+
     view.packId = pack;
 
     context.read<HomeBloc>().add(ViewVideoEvent(view, view.packId.toString()));
@@ -62,8 +62,13 @@ class _SearchOverlayState extends State<SearchOverlay> {
 
     context.read<HomeBloc>().add(WatchedVideoEvent(watch));
 
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => PlayPackScreen(packId: pack)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PlayPackScreen(
+                  packId: pack,
+                  userId: widget.userId,
+                )));
   }
 
   @override

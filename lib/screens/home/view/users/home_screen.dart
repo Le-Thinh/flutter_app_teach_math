@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     });
 
-    packService.getPackData().then((stream) {
+    packService.getPackDataSort().then((stream) {
       setState(() {
         packStream = stream;
       });
@@ -75,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context) => const HomeScreenProvider()));
         break;
       case 1:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => WatchedScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const WatchedScreen()));
         break;
       case 2:
         // Navigate to School
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               ListTile(
-                title: Text('Account: \r${nameUser}'),
+                title: Text('Account: \r$nameUser'),
                 onTap: () {},
               ),
               ListTile(
