@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_teach2/app_view.dart';
+import 'package:http/http.dart' as http;
 
 class FirebaseApi {
   // create an instance of Firebase Messaging
@@ -40,5 +43,30 @@ class FirebaseApi {
 
     // attach event listeners for when a notification opens the app
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
+  }
+
+  Future<void> sendNotification(String title, String body) async {
+    final serverToken = initNotifications();
+    print("Server: $serverToken");
+    final response = await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverToken',
+      },
+      body: jsonEncode({
+        'to': '/topics/all',
+        'notification': {
+          'title': title,
+          'body': body,
+        },
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      print('Failed to send notification: ${response.body}');
+    } else {
+      print('Notification sent successfully!');
+    }
   }
 }

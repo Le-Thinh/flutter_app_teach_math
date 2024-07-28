@@ -6,6 +6,7 @@ import 'package:flutter_app_teach2/screens/auth/background.dart';
 import 'package:flutter_app_teach2/screens/home/view/users/home_provider.dart';
 import 'package:flutter_app_teach2/services/finished/finish_services.dart';
 import 'package:flutter_app_teach2/services/watched/watch_service.dart';
+import 'package:flutter_app_teach2/widget/draw.dart';
 import 'package:flutter_app_teach2/widget/finish_list.dart';
 import 'package:flutter_app_teach2/widget/watched_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,7 +111,7 @@ class _WatchedScreenState extends State<WatchedScreen> {
           'Number Blocks',
           style: GoogleFonts.acme(
               textStyle: const TextStyle(
-            fontSize: 32,
+            fontSize: 24,
             fontWeight: FontWeight.w400,
           )),
         ),
@@ -134,72 +135,7 @@ class _WatchedScreenState extends State<WatchedScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(64.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: ClipOval(
-                  child: currentAvatar != null && currentAvatar!.isNotEmpty
-                      ? Image.network(
-                          currentAvatar!,
-                          height: 200,
-                          width: 200,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset(
-                          'assets/images/logonumberblocks.jpg',
-                          height: 200,
-                          width: 200,
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('Account: \r${nameUser}'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: const Text('Video Watched'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: const Text('Item 3'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: const Text('Item 4'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: const Text('Item 5'),
-              onTap: () {},
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 34, 85, 139),
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: TextButton(
-                    onPressed: () {
-                      context.read<SignInBloc>().add(SignOutRequired());
-                    },
-                    child: const Text(
-                      "Đăng xuất",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
-                    )),
-              ),
-            )
-          ],
-        ),
-      ),
+      drawer: DrawListView(context, currentAvatar, nameUser, userId),
       body: Stack(
         children: [
           const Background(),
@@ -215,7 +151,7 @@ class _WatchedScreenState extends State<WatchedScreen> {
                     "Diary",
                     style: GoogleFonts.acme(
                       textStyle: const TextStyle(
-                        fontSize: 36,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -234,7 +170,7 @@ class _WatchedScreenState extends State<WatchedScreen> {
                     "Finished",
                     style: GoogleFonts.acme(
                       textStyle: const TextStyle(
-                        fontSize: 36,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

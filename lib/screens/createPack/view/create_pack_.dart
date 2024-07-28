@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pack_repository/pack_repository.dart';
 
+import '../../../api/firebase_api.dart';
 import '../../../widget/my_text_view.dart';
 
 class CreatePackScreen extends StatefulWidget {
@@ -83,6 +84,11 @@ class _CreatePackScreenState extends State<CreatePackScreen> {
                 setState(() {
                   videoUrl = state.videoUrl;
                 });
+              } else if (state is CreatepackSuccess) {
+                FirebaseApi().sendNotification(
+                  'We have a new lesson',
+                  "Let's study",
+                );
               }
             },
             child: SingleChildScrollView(

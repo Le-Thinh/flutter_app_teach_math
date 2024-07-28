@@ -6,6 +6,7 @@ import 'package:flutter_app_teach2/screens/home/view/users/home_provider.dart';
 import 'package:flutter_app_teach2/screens/home/view/teacher/home_teacher.dart';
 import 'package:flutter_app_teach2/screens/notifications/view/notification_screen.dart';
 import 'package:flutter_app_teach2/screens/watched/watched_screen.dart';
+import 'package:flutter_app_teach2/theme/theme.dart';
 import 'package:flutter_app_teach2/welcome_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
@@ -39,8 +40,8 @@ class MyAppView extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: "Math",
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
+        theme: lightMode,
+        darkTheme: dartMode,
         home: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             if (state.status == AuthenticationStatus.unauthenticated) {
