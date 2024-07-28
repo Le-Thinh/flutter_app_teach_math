@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app_teach2/services/watched/watch_repo.dart';
 
-class WatchService {
+class WatchService extends WatchedServiceRepository {
   final _watchedCollection = FirebaseFirestore.instance.collection('watched');
   final _packedCollection = FirebaseFirestore.instance.collection('packes');
+  int _quantityVideoWatched = 0;
 
   Stream<List<Map<String, dynamic>>> getPackWatched(String userId) {
     return _watchedCollection
@@ -29,5 +31,19 @@ class WatchService {
       }
       return packList.toList();
     });
+  }
+
+  @override
+  int get getQuantityVideoWatched => _quantityVideoWatched;
+
+  Future<int?> countVideoWatched(String userId) async {
+    try {
+      QuerySnapshot doc =
+          await _watchedCollection.doc(userId).collection('video').get();
+
+      return _quantityVideoWatched = doc.size;
+    } catch (e) {
+      print('Error count video watched ${e.toString()}');
+    }
   }
 }

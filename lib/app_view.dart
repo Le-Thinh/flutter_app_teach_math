@@ -4,6 +4,7 @@ import 'package:flutter_app_teach2/screens/home/view/admin/home_admin.dart';
 import 'package:flutter_app_teach2/screens/home/view/users/home_bloc/home_bloc.dart';
 import 'package:flutter_app_teach2/screens/home/view/users/home_provider.dart';
 import 'package:flutter_app_teach2/screens/home/view/teacher/home_teacher.dart';
+import 'package:flutter_app_teach2/screens/notifications/view/notification_screen.dart';
 import 'package:flutter_app_teach2/screens/watched/watched_screen.dart';
 import 'package:flutter_app_teach2/welcome_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,8 @@ import 'package:user_repository/user_repository.dart';
 
 import 'blocs/authentication_bloc/authentication_bloc.dart';
 import 'repositories/view_repository.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyAppView extends StatelessWidget {
   final UserRepository _userRepository;
@@ -33,6 +36,7 @@ class MyAppView extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: "Math",
         theme: ThemeData.light(),
@@ -68,6 +72,7 @@ class MyAppView extends StatelessWidget {
           '/watched': (context) => const WatchedScreen(),
           '/home': (context) => const HomeScreenProvider(),
           '/teacherHome': (context) => TeacherScreen(),
+          '/notification_screen': (context) => const NotificationScreen(),
         },
       ),
     );

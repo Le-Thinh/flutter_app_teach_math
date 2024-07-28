@@ -7,6 +7,7 @@ class UserService implements UserServiceRepository {
   final collection = FirebaseFirestore.instance.collection('users');
   String _userName = "Guest";
   String _userId = "???????????";
+  String _email = "....@gmail.com";
 
   @override
   String get getCurrentUserName => _userName;
@@ -35,6 +36,22 @@ class UserService implements UserServiceRepository {
         DocumentSnapshot userDoc = await collection.doc(user.uid).get();
         if (userDoc.exists) {
           _userId = userDoc['userId'] ?? "???????";
+        }
+      }
+    } catch (e) {
+      print("Error: " + e.toString());
+    }
+  }
+
+  @override
+  String get getCurrentUserEmail => _email;
+  Future<void> initUserEmail() async {
+    try {
+      User? user = _firebaseAuth.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc = await collection.doc(user.uid).get();
+        if (userDoc.exists) {
+          _email = userDoc['email'] ?? "....@gmail.com";
         }
       }
     } catch (e) {

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_app_teach2/services/finished/finish_repo.dart';
 
-class FinishServices {
+class FinishServices extends FinishServiceRepository {
   final _finishCollection = FirebaseFirestore.instance.collection('finished');
   final _packedCollection = FirebaseFirestore.instance.collection('packes');
+  int quantityVideoFinish = 0;
 
   Stream<List<Map<String, dynamic>>> getPackFinished(String userId) {
     return _finishCollection
@@ -28,5 +30,19 @@ class FinishServices {
       }
       return packList.toList();
     });
+  }
+
+  @override
+  int get getQuantityVideoFinish => quantityVideoFinish;
+
+  Future<int?> countLessonFinished(String userId) async {
+    try {
+      QuerySnapshot doc =
+          await _finishCollection.doc(userId).collection('videoFinish').get();
+
+      return quantityVideoFinish = doc.size;
+    } catch (e) {
+      print("Error count lesson finish ${e.toString()}");
+    }
   }
 }

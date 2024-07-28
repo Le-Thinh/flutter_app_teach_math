@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app_teach2/screens/account/account_screen.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
 import 'package:flutter_app_teach2/screens/home/view/users/home_provider.dart';
 import 'package:flutter_app_teach2/services/finished/finish_services.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_app_teach2/widget/watched_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../services/account/account_service.dart';
 import '../../services/auth/user_service.dart';
 import '../../widget/nav_bottom.dart';
 import '../auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
@@ -30,6 +32,9 @@ class _WatchedScreenState extends State<WatchedScreen> {
   String userId = "#########";
   WatchService watchService = WatchService();
   FinishServices finishServices = FinishServices();
+  AccountService accountService = AccountService();
+  String? currentAvatar = "";
+
   int _selectedIndex = 1;
 
   @override
@@ -43,10 +48,19 @@ class _WatchedScreenState extends State<WatchedScreen> {
     userService.initUserId().then((value) {
       setState(() {
         userId = userService.getCurrentUserId;
+        getAvatarUser(userId);
       });
     });
 
     super.initState();
+  }
+
+  Future<void> getAvatarUser(String uid) async {
+    await accountService.getAvatarUrl(uid);
+    setState(() {
+      currentAvatar = accountService.getCurrentAvatarUrl;
+      ;
+    });
   }
 
   void showSearchOverlay() {
@@ -74,11 +88,14 @@ class _WatchedScreenState extends State<WatchedScreen> {
                 builder: (context) => const HomeScreenProvider()));
         break;
       case 1:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const WatchedScreen()));
         break;
       case 2:
-        // Navigate to School
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AccountScreen(
+                      userId: userId,
+                    )));
         break;
     }
   }
@@ -125,11 +142,19 @@ class _WatchedScreenState extends State<WatchedScreen> {
               child: GestureDetector(
                 onTap: () {},
                 child: ClipOval(
-                  child: Image.asset(
-                    "assets/images/logonumberblocks.jpg",
-                    fit: BoxFit.cover,
-                    scale: 5,
-                  ),
+                  child: currentAvatar != null && currentAvatar!.isNotEmpty
+                      ? Image.network(
+                          currentAvatar!,
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'assets/images/logonumberblocks.jpg',
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),

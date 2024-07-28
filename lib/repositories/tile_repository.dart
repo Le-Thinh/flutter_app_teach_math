@@ -16,7 +16,7 @@ class TitleRepository {
           .update({'titleId': title.titleId});
       print("Title Created with ID: ${title.titleId}");
     } catch (e) {
-      print("Error creating title: " + e.toString());
+      print("Error creating title: ${e.toString()}");
     }
   }
 }

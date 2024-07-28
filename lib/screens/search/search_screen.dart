@@ -37,6 +37,12 @@ class _SearchOverlayState extends State<SearchOverlay> {
             .where('title', isGreaterThanOrEqualTo: query)
             .where('title', isLessThanOrEqualTo: '$query\uf8ff')
             .snapshots();
+
+        // searchResultsStream = FirebaseFirestore.instance
+        //     .collection('packes')
+        //     .where('lessonName', isGreaterThanOrEqualTo: query)
+        //     .where('lessonName', isLessThanOrEqualTo: '$query\uf8ff')
+        //     .snapshots();
       });
     } else {
       setState(() {
@@ -84,7 +90,7 @@ class _SearchOverlayState extends State<SearchOverlay> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
             ),
           ),
         ),
@@ -94,7 +100,7 @@ class _SearchOverlayState extends State<SearchOverlay> {
                   stream: searchResultsStream,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: const CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData ||
@@ -119,7 +125,8 @@ class _SearchOverlayState extends State<SearchOverlay> {
                     }
                   },
                 )
-              : Center(child: Text('Enter a search term to start searching.')),
+              : const Center(
+                  child: Text('Enter a search term to start searching.')),
         ),
       ],
     );
