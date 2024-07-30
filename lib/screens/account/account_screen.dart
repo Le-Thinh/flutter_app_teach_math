@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_teach2/models/avatar/avatar.dart';
+import 'package:flutter_app_teach2/provider/provider.dart';
 import 'package:flutter_app_teach2/repositories/avatar_repository.dart';
 import 'package:flutter_app_teach2/screens/auth/background.dart';
 import 'package:flutter_app_teach2/screens/editAvatar/edit_avatar_overlay.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_app_teach2/widget/count_lesson.dart';
 import 'package:flutter_app_teach2/widget/draw.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/auth/user_service.dart';
 import '../../widget/nav_bottom.dart';
@@ -131,16 +133,17 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       key: _globalKey,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade50,
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           'Account',
           style: GoogleFonts.acme(
-            textStyle: const TextStyle(
+            textStyle: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w400,
+              color: Theme.of(context).textTheme.bodyText1?.color,
             ),
           ),
         ),
@@ -155,195 +158,229 @@ class _AccountScreenState extends State<AccountScreen> {
             onPressed: () {
               _globalKey.currentState?.openDrawer();
             },
-            icon: const Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              color: Theme.of(context).textTheme.bodyText1?.color,
+            ),
           ),
         ],
       ),
       drawer: DrawListView(context, currentAvatar, nameUser, widget.userId),
-      body: Container(
-        color: Colors.blue.shade50,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        Center(
-                          child: Column(
-                            children: [
-                              ClipOval(
-                                child: currentAvatar != null &&
-                                        currentAvatar!.isNotEmpty
-                                    ? Image.network(
-                                        currentAvatar!,
-                                        height: 100,
-                                        width: 100,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.asset(
-                                        height: 100,
-                                        width: 100,
-                                        'assets/images/logonumberblocks.jpg',
-                                        scale: 1,
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-                              const SizedBox(height: 8),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 96, 192, 151),
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                    ),
-                                  ],
+      body:
+          Consumer<UiProvider>(builder: (context, UiProvider notifier, child) {
+        return Container(
+          color: Theme.of(context).backgroundColor,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 16),
+                          Center(
+                            child: Column(
+                              children: [
+                                ClipOval(
+                                  child: currentAvatar != null &&
+                                          currentAvatar!.isNotEmpty
+                                      ? Image.network(
+                                          currentAvatar!,
+                                          height: 100,
+                                          width: 100,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.asset(
+                                          height: 100,
+                                          width: 100,
+                                          'assets/images/logonumberblocks.jpg',
+                                          scale: 1,
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
-                                child: TextButton(
-                                  onPressed: showEditAvatarOverlay,
-                                  child: Text(
-                                    "Edit Avatar",
-                                    style: GoogleFonts.acme(
-                                      textStyle: const TextStyle(
-                                        fontSize: 16,
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                        fontWeight: FontWeight.w400,
+                                const SizedBox(height: 8),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).cardColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                      ),
+                                    ],
+                                  ),
+                                  child: TextButton(
+                                    onPressed: showEditAvatarOverlay,
+                                    child: Text(
+                                      "Edit Avatar",
+                                      style: GoogleFonts.acme(
+                                        textStyle: TextStyle(
+                                          fontSize: 16,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.color,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              LessonCountCard(
+                                title: 'Lessons Finished',
+                                count: countLessonFinish,
+                              ),
+                              LessonCountCard(
+                                title: 'Lessons Watched',
+                                count: countLessWatched,
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            LessonCountCard(
-                              title: 'Lessons Finished',
-                              count: countLessonFinish,
-                            ),
-                            LessonCountCard(
-                              title: 'Lessons Watched',
-                              count: countLessWatched,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                "Name: ${nameUser.toString()}",
-                                style: GoogleFonts.aBeeZee(
-                                  textStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                          const SizedBox(height: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  "Name: ${nameUser.toString()}",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                "Name: ${emailUser.toString()}",
-                                style: GoogleFonts.aBeeZee(
-                                  textStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                              const SizedBox(height: 16),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  "Email: ${emailUser.toString()}",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                "Phone: ${nameUser.toString()}",
-                                style: GoogleFonts.aBeeZee(
-                                  textStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                              const SizedBox(height: 16),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  "Phone: ${nameUser.toString()}",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                "Phone: ${nameUser.toString()}",
-                                style: GoogleFonts.aBeeZee(
-                                  textStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                "Phone: ${nameUser.toString()}",
-                                style: GoogleFonts.aBeeZee(
-                                  textStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
+                              const SizedBox(height: 16),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SettingScreen()));
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: itemInAccount(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SettingScreen()));
-                              },
-                              child: itemInAccount(
-                                context,
-                                'Setting',
-                                const Icon(Icons.settings),
+                                    'Setting',
+                                    Icon(
+                                      Icons.settings,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 16),
-                            SettingSwitch(context, 'Dart / Light Mode',
-                                Icon(CupertinoIcons.moon), onTap, isSwitch),
-                            const SizedBox(height: 16),
-                            const SizedBox(height: 16),
-                            const SizedBox(height: 8),
-                          ],
-                        ),
-                      ],
+                              const SizedBox(height: 16),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Theme.of(context).cardColor,
+                                  ),
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.14,
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.dark_mode,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color,
+                                    ),
+                                    title: Text(
+                                      "Dark Theme",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1
+                                              ?.color),
+                                    ),
+                                    trailing: Switch(
+                                      value: notifier.isDark,
+                                      onChanged: (value) =>
+                                          notifier.changeTheme(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
       bottomNavigationBar: bottomNav(_selectedIndex, onItemTapped),
     );
   }

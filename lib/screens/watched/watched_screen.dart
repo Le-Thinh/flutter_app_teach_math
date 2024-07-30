@@ -104,9 +104,10 @@ class _WatchedScreenState extends State<WatchedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       key: _globalKey,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade50,
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           'Number Blocks',
           style: GoogleFonts.acme(
@@ -138,7 +139,7 @@ class _WatchedScreenState extends State<WatchedScreen> {
       drawer: DrawListView(context, currentAvatar, nameUser, userId),
       body: Stack(
         children: [
-          const Background(),
+          // const Background(),
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

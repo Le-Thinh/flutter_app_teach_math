@@ -16,11 +16,11 @@ class LessonCountCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Theme.of(context).shadowColor,
             spreadRadius: 2,
             blurRadius: 5,
           ),
@@ -32,8 +32,9 @@ class LessonCountCard extends StatelessWidget {
           Text(
             title,
             style: GoogleFonts.acme(
-              textStyle: const TextStyle(
+              textStyle: TextStyle(
                 fontSize: 18,
+                color: Theme.of(context).textTheme.bodyText1?.color,
                 fontWeight: FontWeight.w500,
               ),
             ),

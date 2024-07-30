@@ -117,15 +117,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       key: _globalKey,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade50,
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           'Number Blocks',
           style: GoogleFonts.acme(
-            textStyle: const TextStyle(
+            textStyle: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w400,
+              color: Theme.of(context).textTheme.bodyText1?.color,
             ),
           ),
         ),
@@ -138,20 +140,26 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: showSearchOverlay,
-            icon: const Icon(Icons.search),
+            icon: Icon(
+              Icons.search,
+              color: Theme.of(context).textTheme.bodyText1?.color,
+            ),
           ),
           IconButton(
             onPressed: () {
               _globalKey.currentState?.openDrawer();
             },
-            icon: const Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              color: Theme.of(context).textTheme.bodyText1?.color,
+            ),
           ),
         ],
       ),
       drawer: DrawListView(context, currentAvatar as String, nameUser, userId),
       body: Stack(
         children: [
-          const Background(),
+          // const Background(),
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,9 +171,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                     "New Lesson",
                     style: GoogleFonts.lato(
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.bodyText1?.color,
                       ),
                     ),
                   ),
@@ -176,8 +185,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                     "Outstanding",
                     style: GoogleFonts.lato(
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontSize: 20,
+                        color: Theme.of(context).textTheme.bodyText1?.color,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

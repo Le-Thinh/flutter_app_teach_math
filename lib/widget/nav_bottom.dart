@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget bottomNav(int selectedIndex, Function(int) onItemTapped) {
   return BottomNavigationBar(
-    backgroundColor: const Color.fromARGB(255, 203, 211, 218),
+    backgroundColor: const Color.fromARGB(255, 227, 227, 227),
     items: const <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(Icons.home),
@@ -18,6 +18,11 @@ Widget bottomNav(int selectedIndex, Function(int) onItemTapped) {
       ),
     ],
     currentIndex: selectedIndex,
+    selectedItemColor: Colors.black,
+    unselectedItemColor: Colors.grey,
+    selectedFontSize: 14,
+    unselectedFontSize: 12,
+    type: BottomNavigationBarType.fixed,
     onTap: onItemTapped,
   );
 }

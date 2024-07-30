@@ -72,10 +72,10 @@ class _PackTileState extends State<PackTile> {
         alignment: Alignment.topLeft,
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 8),
-          width: MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.7,
           height: MediaQuery.of(context).size.height * 0.1,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
@@ -107,19 +107,19 @@ class _PackTileState extends State<PackTile> {
                     children: [
                       Text(
                         widget.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: Theme.of(context).textTheme.bodyText1?.color,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 8),
                       Text(
                         widget.lessonName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: Colors.black54,
+                          color: Theme.of(context).textTheme.bodyText2?.color,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
