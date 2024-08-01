@@ -25,6 +25,15 @@ class AuthenticationBloc
         emit(const AuthenticationState.unauthenticated());
       }
     });
+
+    on<AuthenticationLogoutRequested>((event, emit) async {
+      try {
+        await userRepository.logOut();
+        emit(const AuthenticationState.unauthenticated());
+      } catch (_) {
+        emit(AuthenticationState.authenticated(state.user!));
+      }
+    });
   }
 
   @override

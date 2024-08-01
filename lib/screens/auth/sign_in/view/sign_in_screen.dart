@@ -49,12 +49,13 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Form(
         key: _formKey,
         child: Scaffold(
+            backgroundColor: Theme.of(context).backgroundColor,
             appBar: AppBar(
-              backgroundColor: Colors.blue.shade50,
+              backgroundColor: Theme.of(context).primaryColor,
               leading: GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => WelcomeScreen()));
+                        builder: (context) => const WelcomeScreen()));
                   },
                   child: ClipOval(
                       child: Image.asset(
@@ -68,140 +69,141 @@ class _SignInScreenState extends State<SignInScreen> {
                         const TextStyle(color: Colors.blue, fontSize: 32)),
               ),
             ),
-            body: Stack(
-              children: <Widget>[
-                const Background(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: MyTextField(
-                          controller: emailController,
-                          hintText: 'email',
-                          obscureText: false,
-                          keyboardType: TextInputType.emailAddress,
-                          prefixIcon: const Icon(CupertinoIcons.mail_solid),
-                          errorMsg: _errorMsg,
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return 'Please fill in this field';
-                            } else if (!RegExp(
-                                    r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
-                                .hasMatch(val)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          }),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: MyTextField(
-                        controller: passwordController,
-                        hintText: 'password',
-                        obscureText: obscurePassword,
-                        keyboardType: TextInputType.visiblePassword,
-                        prefixIcon: const Icon(CupertinoIcons.lock_fill),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: MyTextField(
+                        controller: emailController,
+                        hintText: 'email',
+                        obscureText: false,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icon(
+                          CupertinoIcons.mail_solid,
+                          color: Theme.of(context).textTheme.bodyText1?.color,
+                        ),
                         errorMsg: _errorMsg,
                         validator: (val) {
                           if (val!.isEmpty) {
                             return 'Please fill in this field';
-                          } else if (!RegExp(
-                                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                          } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
                               .hasMatch(val)) {
-                            return 'Please enter a valid password';
+                            return 'Please enter a valid email';
                           }
                           return null;
+                        }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: MyTextField(
+                      controller: passwordController,
+                      hintText: 'password',
+                      obscureText: obscurePassword,
+                      keyboardType: TextInputType.visiblePassword,
+                      prefixIcon: Icon(
+                        CupertinoIcons.lock_fill,
+                        color: Theme.of(context).textTheme.bodyText1?.color,
+                      ),
+                      errorMsg: _errorMsg,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please fill in this field';
+                        } else if (!RegExp(
+                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                            .hasMatch(val)) {
+                          return 'Please enter a valid password';
+                        }
+                        return null;
+                      },
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            obscurePassword = !obscurePassword;
+                            if (obscurePassword) {
+                              iconPassword = CupertinoIcons.eye_fill;
+                            } else {
+                              iconPassword = CupertinoIcons.eye_slash_fill;
+                            }
+                          });
                         },
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obscurePassword = !obscurePassword;
-                              if (obscurePassword) {
-                                iconPassword = CupertinoIcons.eye_fill;
-                              } else {
-                                iconPassword = CupertinoIcons.eye_slash_fill;
-                              }
-                            });
-                          },
-                          icon: Icon(iconPassword),
-                        ),
+                        icon: Icon(iconPassword),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    !signInRequired
-                        ? SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            child: TextButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    // ignore: unused_local_variable
-                                    String email = emailController.text;
-                                    // ignore: unused_local_variable
-                                    String password = passwordController.text;
-                                    context.read<SignInBloc>().add(
-                                        SignInRequired(emailController.text,
-                                            passwordController.text));
-                                    MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider(
-                                          create: (context) => SignInBloc(
-                                              context
-                                                  .read<AuthenticationBloc>()
-                                                  .userRepository),
-                                        ),
-                                      ],
-                                      child: const HomeScreen(),
-                                    );
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                    elevation: 3.0,
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 83, 146, 198),
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(60))),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 5),
-                                  child: Text(
-                                    'Sign In',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                )),
-                          )
-                        : const CircularProgressIndicator(),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Don't have an account yet?"),
-                          TextButton(
+                  ),
+                  const SizedBox(height: 16),
+                  !signInRequired
+                      ? SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: TextButton(
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => SignUpProvider()));
+                                if (_formKey.currentState!.validate()) {
+                                  // ignore: unused_local_variable
+                                  String email = emailController.text;
+                                  // ignore: unused_local_variable
+                                  String password = passwordController.text;
+                                  context.read<SignInBloc>().add(SignInRequired(
+                                      emailController.text,
+                                      passwordController.text));
+                                  MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider(
+                                        create: (context) => SignInBloc(context
+                                            .read<AuthenticationBloc>()
+                                            .userRepository),
+                                      ),
+                                    ],
+                                    child: const HomeScreen(),
+                                  );
+                                }
                               },
-                              child: const Text(
-                                'Sign Up',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: 14),
+                              style: TextButton.styleFrom(
+                                  elevation: 3.0,
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 83, 146, 198),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(60))),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 5),
+                                child: Text(
+                                  'Sign In',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               )),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
+                        )
+                      : const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Don't have an account yet?"),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => SignUpProvider()));
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 14),
+                            )),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             )),
       ),
     );

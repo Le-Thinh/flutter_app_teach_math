@@ -8,6 +8,7 @@ class UserService implements UserServiceRepository {
   String _userName = "Guest";
   String _userId = "???????????";
   String _email = "....@gmail.com";
+  DateTime? _joinDay;
 
   @override
   String get getCurrentUserName => _userName;
@@ -22,7 +23,7 @@ class UserService implements UserServiceRepository {
         }
       }
     } catch (e) {
-      print("Error: " + e.toString());
+      print("Error: ${e.toString()}");
     }
   }
 
@@ -39,7 +40,7 @@ class UserService implements UserServiceRepository {
         }
       }
     } catch (e) {
-      print("Error: " + e.toString());
+      print("Error: ${e.toString()}");
     }
   }
 
@@ -55,7 +56,27 @@ class UserService implements UserServiceRepository {
         }
       }
     } catch (e) {
-      print("Error: " + e.toString());
+      print("Error: ${e.toString()}");
+    }
+  }
+
+  @override
+  DateTime? get getCurrentUserJoinDay => _joinDay;
+  Future<void> initJoinDay() async {
+    try {
+      User? user = _firebaseAuth.currentUser;
+
+      if (user != null) {
+        final creationTime = user.metadata.creationTime;
+        if (creationTime != null) {
+          _joinDay =
+              DateTime(creationTime.year, creationTime.month, creationTime.day);
+        } else {
+          _joinDay = null;
+        }
+      }
+    } catch (e) {
+      print("Error: ${e.toString()}");
     }
   }
 }

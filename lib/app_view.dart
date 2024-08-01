@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_teach2/provider/provider.dart';
+import 'package:flutter_app_teach2/screens/account/account_screen.dart';
 import 'package:flutter_app_teach2/screens/auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
 import 'package:flutter_app_teach2/screens/home/view/admin/home_admin.dart';
 import 'package:flutter_app_teach2/screens/home/view/users/home_bloc/home_bloc.dart';
@@ -20,10 +22,12 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyAppView extends StatelessWidget {
   final UserRepository _userRepository;
+
   const MyAppView(this._userRepository, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _firebaseAuth = FirebaseAuth.instance.currentUser;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -82,7 +86,10 @@ class MyAppView extends StatelessWidget {
                 '/watched': (context) => const WatchedScreen(),
                 '/home': (context) => const HomeScreenProvider(),
                 '/teacherHome': (context) => TeacherScreen(),
+                '/account_screen': (context) =>
+                    AccountScreen(userId: _firebaseAuth!.uid.toString()),
                 '/notification_screen': (context) => const NotificationScreen(),
+                '/welcomeScreen': (context) => const WelcomeScreen(),
               },
             );
           },

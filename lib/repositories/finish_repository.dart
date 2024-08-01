@@ -14,7 +14,7 @@ class FinishRepository {
 
       await _finishCollection.doc(finish.userId).set({'userId': finish.userId});
     } catch (e) {
-      print("Set Data Finish Error: " + e.toString());
+      print("Set Data Finish Error: ${e.toString()}");
     }
   }
 }

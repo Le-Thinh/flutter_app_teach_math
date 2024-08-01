@@ -1,15 +1,21 @@
 class InfoEntity {
   String userId;
-  String name;
   String email;
-  DateTime? updateAt;
-  String avatar;
+  String name;
+  String? phone;
+  String? address;
+  DateTime? dateOfBirth;
+  DateTime? lastUpdateAt;
+  DateTime? lastLoginAt;
   InfoEntity({
     required this.userId,
-    required this.name,
     required this.email,
-    required this.updateAt,
-    required this.avatar,
+    required this.name,
+    required this.phone,
+    required this.address,
+    required this.dateOfBirth,
+    required this.lastUpdateAt,
+    required this.lastLoginAt,
   });
 
   Map<String, Object?> toDocument() {
@@ -17,8 +23,11 @@ class InfoEntity {
       "userId": userId,
       "name": name,
       "email": email,
-      "updateAt": updateAt as DateTime,
-      "avatar": avatar
+      "phone": phone,
+      "address": address,
+      "dateOfBirth": dateOfBirth as DateTime,
+      "lastUpdateAt": lastUpdateAt as DateTime,
+      "lastLoginAt": lastLoginAt as DateTime,
     };
   }
 
@@ -27,8 +36,11 @@ class InfoEntity {
       userId: doc['userId'],
       name: doc['name'],
       email: doc['email'],
-      updateAt: doc['updateAt'],
-      avatar: doc['avatar'],
+      phone: doc['phone'],
+      address: doc['address'],
+      dateOfBirth: doc['dateOfBirth'],
+      lastUpdateAt: doc['lastUpdateAt'],
+      lastLoginAt: doc['lastLoginAt'],
     );
   }
 }

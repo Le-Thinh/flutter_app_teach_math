@@ -17,6 +17,8 @@ class UiProvider extends ChangeNotifier {
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: Colors.white),
       bodyText2: TextStyle(color: Colors.white70),
+      subtitle1: TextStyle(color: Colors.black54),
+      subtitle2: TextStyle(color: Colors.black87),
     ),
   );
 
@@ -29,11 +31,14 @@ class UiProvider extends ChangeNotifier {
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: Colors.black),
       bodyText2: TextStyle(color: Colors.black87),
+      subtitle1: TextStyle(color: Colors.white70),
+      subtitle2: TextStyle(color: Colors.white60),
     ),
   );
 
   changeTheme() {
     _isDark = !_isDark;
+    print('Dark: $_isDark');
 
     //Save the value to secure storage
     storage.setBool('isDark', _isDark);

@@ -113,10 +113,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ],
         ),
       ),
-      body: Stack(
-        children: [
-          Background(),
-        ],
+      body: const Stack(
+        children: [],
       ),
     );
   }

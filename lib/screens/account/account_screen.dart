@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_teach2/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_app_teach2/models/avatar/avatar.dart';
 import 'package:flutter_app_teach2/provider/provider.dart';
 import 'package:flutter_app_teach2/repositories/avatar_repository.dart';
@@ -13,14 +14,16 @@ import 'package:flutter_app_teach2/widget/count_lesson.dart';
 import 'package:flutter_app_teach2/widget/draw.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/auth/user_service.dart';
+import '../../welcome_screen.dart';
 import '../../widget/nav_bottom.dart';
 import '../../widget/setting_switch.dart';
 import '../auth/sign_in/sign_in_bloc/sign_in_bloc.dart';
 import '../home/view/users/home_provider.dart';
-import '../setting/setting_screen.dart';
+import '../setting/edit_info_screen.dart';
 import '../watched/watched_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -40,9 +43,13 @@ class _AccountScreenState extends State<AccountScreen> {
   WatchService watchService = WatchService();
   AccountService accountService = AccountService();
   AvatarRepository avatarRepository = AvatarRepository();
+
   Avatar avatar = Avatar.empty;
   String? currentAvatar = "";
   String nameUser = "Guest";
+  DateTime? joinDate;
+  DateTime? dateOfBirth;
+  final dateFormat = DateFormat('dd/MM/yyyy');
   int _selectedIndex = 2;
   int countLessonFinish = 0;
   int countLessWatched = 0;
@@ -59,6 +66,14 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   void initState() {
     super.initState();
+
+    userService.initJoinDay().then((value) {
+      joinDate = userService.getCurrentUserJoinDay as DateTime;
+    });
+
+    accountService.getBirthDay(widget.userId).then((value) {
+      dateOfBirth = accountService.getCurrentUserBirthday as DateTime;
+    });
 
     userService.initUserEmail().then((value) {
       setState(() {
@@ -181,7 +196,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 24),
                           Center(
                             child: Column(
                               children: [
@@ -235,7 +250,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 24),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -249,7 +264,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 24),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -271,7 +286,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 24),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
@@ -289,12 +304,30 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 24),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Text(
-                                  "Phone: ${nameUser.toString()}",
+                                  "Join Day: ${joinDate != null ? dateFormat.format(joinDate!) : 'N/A'}",
+                                  style: GoogleFonts.aBeeZee(
+                                    textStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  "Date Of Birth: ${dateOfBirth != null ? dateFormat.format(dateOfBirth!) : 'N/A'}",
                                   style: GoogleFonts.aBeeZee(
                                     textStyle: TextStyle(
                                       fontSize: 16,
@@ -313,17 +346,18 @@ class _AccountScreenState extends State<AccountScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SettingScreen()));
+                                          builder: (context) => EditInfoScreen(
+                                                userId: widget.userId,
+                                              )));
                                 },
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 8),
                                   child: itemInAccount(
                                     context,
-                                    'Setting',
+                                    'Edit Info',
                                     Icon(
-                                      Icons.settings,
+                                      Icons.edit,
                                       color: Theme.of(context)
                                           .textTheme
                                           .bodyText1
@@ -369,6 +403,28 @@ class _AccountScreenState extends State<AccountScreen> {
                                 ),
                               ),
                               const SizedBox(height: 16),
+                              GestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<SignInBloc>()
+                                      .add(SignOutRequired());
+                                },
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: itemInAccount(
+                                    context,
+                                    'Logout',
+                                    Icon(
+                                      Icons.settings,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ],
